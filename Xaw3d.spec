@@ -1,7 +1,7 @@
 Summary:	A version of the MIT Athena widget set for X
 Name:		Xaw3d
 Version:	1.5E
-Release:	%mkrel 6
+Release:	%mkrel 7
 Group:		System/Libraries
 BuildRequires:	X11-devel xpm-devel bison flex imake
 
@@ -29,6 +29,7 @@ those applications.
 
 %define major 7
 %define libname %mklibname %{name} %{major}
+%define develname %mklibname %{name} -d
 
 %package -n	%{libname}
 Summary:	A version of the MIT Athena widget set for X
@@ -45,15 +46,14 @@ You should install Xaw3d if you are using applications which incorporate
 the MIT Athena widget set and you'd like to incorporate a 3D look into
 those applications.
 
-%package -n	%{libname}-devel
+%package -n	%{develname}
 Summary:	Header files and static libraries for development using Xaw3d
 Group:		Development/C
 Requires:	%{libname} = %{version}-%{release}
-Provides:	%{name}-devel lib%{name}-devel
-Obsoletes:	%{name}-devel
+Provides:	%{name}-devel = %version-%release
+Obsoletes:	%{libname}-devel 
 
-
-%description -n	%{libname}-devel
+%description -n	%{develname}
 Xaw3d is an enhanced version of the MIT Athena widget set for
 the X Window System.  Xaw3d adds a three-dimensional look to those
 applications with minimal or no source code changes. Xaw3d-devel includes
@@ -95,21 +95,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %postun -n %{libname} -p /sbin/ldconfig
 
-%post -n %{libname}-devel
-if [ ! -d %{_prefix}/X11R6/include/X11/Xaw3d ] ; then
-	rm -f %{_prefix}/X11R6/include/X11/Xaw3d
-	ln -sf ../Xaw3d %{_prefix}/X11R6/include/X11
-fi
-
-%triggerpostun -- Xaw3d-devel < 1.3-17
-rm -rf %{_prefix}/X11R6/include/X11/Xaw3d
-ln -sf ../Xaw3d %{_prefix}/X11R6/include/X11
-
 %files -n %{libname}
 %defattr(-,root,root)
-%_libdir/*.so.*
+%_libdir/*.so.%{major}*
 
-%files -n %{libname}-devel
+%files -n %{develname}
 %defattr(-,root,root)
 %_libdir/*.so
 %{_includedir}/X11/Xaw3d
