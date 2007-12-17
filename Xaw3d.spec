@@ -12,7 +12,6 @@ Patch2:		Xaw3d-1.5E-xorg-imake.patch.bz2
 
 Url:            ftp://ftp.x.org/contrib/widgets/Xaw3d/
 License:	MIT
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 Xaw3d is an enhanced version of the MIT Athena Widget set for
