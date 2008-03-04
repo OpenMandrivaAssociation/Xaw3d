@@ -1,7 +1,7 @@
 Summary:	A version of the MIT Athena widget set for X
 Name:		Xaw3d
 Version:	1.5E
-Release:	%mkrel 7
+Release:	%mkrel 8
 Group:		System/Libraries
 BuildRequires:	X11-devel xpm-devel bison flex imake
 
