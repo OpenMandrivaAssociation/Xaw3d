@@ -1,14 +1,13 @@
 Summary:	A version of the MIT Athena widget set for X
 Name:		Xaw3d
 Version:	1.5E
-Release:	%mkrel 10
+Release:	%mkrel 11
 Group:		System/Libraries
 BuildRequires:	X11-devel xpm-devel bison flex imake
 
 Source0:	ftp://ftp.x.org/contrib/widgets/Xaw3d/R6.3/%{name}-%{version}.tar.bz2
-#Patch0:	Xaw3d-1.1-shlib.patch.bz2
-Patch1:		Xaw3d-1.3-glibc.patch.bz2
-Patch2:		Xaw3d-1.5E-xorg-imake.patch.bz2
+Patch1:		Xaw3d-1.3-glibc.patch
+Patch2:		Xaw3d-1.5E-xorg-imake.patch
 
 Url:            ftp://ftp.x.org/contrib/widgets/Xaw3d/
 License:	MIT
@@ -67,7 +66,6 @@ package.
 %prep
 %setup -q -c
 cd xc/lib/Xaw3d
-#%patch0 -p0
 ln -s .. X11
 %patch1 -p4
 %patch2 -p0
@@ -75,6 +73,8 @@ ln -s .. X11
 %build
 cd xc/lib/Xaw3d
 xmkmf
+# do not link with libXp
+perl -pi -e 's|^(EXTRAXAWREQS =.*)|#$1|;' Makefile
 %ifarch alpha
 # alpha was giving internal compiler errors...
 make CDEBUGFLAGS=""
