@@ -3,12 +3,16 @@ Name:		Xaw3d
 Version:	1.5E
 Release:	%mkrel 12
 Group:		System/Libraries
-BuildRequires:	X11-devel xpm-devel bison flex imake
-
+BuildRequires:	libx11-devel
+BuildRequires:	libxext-devel
+BuildRequires:	libxmu-devel
+BuildRequires:	libxt-devel
+BuildRequires:	libxpm-devel
+BuildRequires:	bison flex
+BuildRequires:	imake
 Source0:	ftp://ftp.x.org/contrib/widgets/Xaw3d/R6.3/%{name}-%{version}.tar.bz2
 Patch1:		Xaw3d-1.3-glibc.patch
 Patch2:		Xaw3d-1.5E-xorg-imake.patch
-
 Url:            ftp://ftp.x.org/contrib/widgets/Xaw3d/
 License:	MIT
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
@@ -79,7 +83,7 @@ perl -pi -e 's|^(EXTRAXAWREQS =.*)|#$1|;' Makefile
 # alpha was giving internal compiler errors...
 make CDEBUGFLAGS=""
 %else
-%make CDEBUGFLAGS="$RPM_OPT_FLAGS" CXXDEBUGFLAGS="$RPM_OPT_FLAGS"
+%make CDEBUGFLAGS="%optflags" CXXDEBUGFLAGS="%optflags" SHLIBGLOBALSFLAGS="%ldflags"
 %endif
 
 %install
