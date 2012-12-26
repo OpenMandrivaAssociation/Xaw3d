@@ -10,6 +10,7 @@ BuildRequires:	pkgconfig(xt)
 BuildRequires:	pkgconfig(xpm)
 BuildRequires:	bison flex
 BuildRequires:	libtool-base
+BuildRequires:	x11-util-macros
 Source0:	http://xorg.freedesktop.org/individual/lib/lib%name-%version.tar.bz2
 Patch0:		libXaw3d-soname-7.patch
 Url:            http://xorg.freedesktop.org/individual/lib/
