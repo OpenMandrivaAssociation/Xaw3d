@@ -1,21 +1,19 @@
 Summary:	A version of the MIT Athena widget set for X
 Name:		Xaw3d
-Version:	1.5E
-Release:	%mkrel 14
+Version:	1.6.2
+Release:	1
 Group:		System/Libraries
-BuildRequires:	libx11-devel
-BuildRequires:	libxext-devel
-BuildRequires:	libxmu-devel
-BuildRequires:	libxt-devel
-BuildRequires:	libxpm-devel
+BuildRequires:	pkgconfig(x11)
+BuildRequires:	pkgconfig(xext)
+BuildRequires:	pkgconfig(xmu)
+BuildRequires:	pkgconfig(xt)
+BuildRequires:	pkgconfig(xpm)
 BuildRequires:	bison flex
-BuildRequires:	imake
-Source0:	ftp://ftp.x.org/contrib/widgets/Xaw3d/R6.3/%{name}-%{version}.tar.bz2
-Patch1:		Xaw3d-1.3-glibc.patch
-Patch2:		Xaw3d-1.5E-xorg-imake.patch
-Url:            ftp://ftp.x.org/contrib/widgets/Xaw3d/
+BuildRequires:	libtool-base
+Source0:	http://xorg.freedesktop.org/individual/lib/lib%name-%version.tar.bz2
+Patch0:		libXaw3d-soname-7.patch
+Url:            http://xorg.freedesktop.org/individual/lib/
 License:	MIT
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 Xaw3d is an enhanced version of the MIT Athena Widget set for
@@ -33,12 +31,13 @@ those applications.
 %define major 7
 %define libname %mklibname %{name} %{major}
 %define develname %mklibname %{name} -d
+%define staticname %mklibname %name -d -s
 
 %package -n	%{libname}
 Summary:	A version of the MIT Athena widget set for X
 Group:		System/Libraries
-Obsoletes:	%{name}
-Provides:	%{name}
+Obsoletes:	%{name} < %EVRD
+Provides:	%{name} = %EVRD
 
 %description -n	%{libname}
 Xaw3d is an enhanced version of the MIT Athena Widget set for
@@ -50,11 +49,13 @@ the MIT Athena widget set and you'd like to incorporate a 3D look into
 those applications.
 
 %package -n	%{develname}
-Summary:	Header files and static libraries for development using Xaw3d
+Summary:	Header files for development using Xaw3d
 Group:		Development/C
 Requires:	%{libname} = %{version}-%{release}
 Provides:	%{name}-devel = %version-%release
+%if "%{develname}" != "%{libname}-devel"
 Obsoletes:	%{libname}-devel 
+%endif
 
 %description -n	%{develname}
 Xaw3d is an enhanced version of the MIT Athena widget set for
@@ -67,51 +68,44 @@ You should install Xaw3d-devel if you are going to develop applications
 using the Xaw3d widget set.  You'll also need to install the Xaw3d
 package.
 
+%package -n %{staticname}
+Summary:	Library files needed for linking statically to %name
+Group:		Development/C
+Requires:	%develname = %EVRD
+
+%description -n %{staticname}
+Library files needed for linking statically to %name
+
 %prep
-%setup -q -c
-cd xc/lib/Xaw3d
-ln -s .. X11
-%patch1 -p4
-%patch2 -p0
+%setup -q -n lib%name-%version
+%apply_patches
+
+libtoolize --force
+aclocal
+automake -a
+autoconf
+
+%configure
  
 %build
-cd xc/lib/Xaw3d
-xmkmf
-# do not link with libXp
-perl -pi -e 's|^(EXTRAXAWREQS =.*)|#$1|;' Makefile
-%ifarch alpha
-# alpha was giving internal compiler errors...
-make CDEBUGFLAGS=""
-%else
-%make CDEBUGFLAGS="%optflags" CXXDEBUGFLAGS="%optflags" SHLIBGLOBALSFLAGS="%ldflags"
-%endif
+%make
 
 %install
-rm -rf $RPM_BUILD_ROOT
-cd xc/lib/Xaw3d
-%{makeinstall_std}
+%makeinstall_std
 
-
-%clean
-rm -rf $RPM_BUILD_ROOT
-
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
+# Useless as it contains mostly build instructions
+rm -rf %buildroot%_docdir/lib%name
 
 %files -n %{libname}
-%defattr(-,root,root)
 %_libdir/*.so.%{major}*
 
 %files -n %{develname}
-%defattr(-,root,root)
 %_libdir/*.so
-%{_includedir}/X11/Xaw3d
+%_includedir/X11/Xaw3d
+%_libdir/pkgconfig/*.pc
 
+%files -n %staticname
+%_libdir/*.a
 
 %changelog
 * Sat May 07 2011 Oden Eriksson <oeriksson@mandriva.com> 1.5E-13mdv2011.0

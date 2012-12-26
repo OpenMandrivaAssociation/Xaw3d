@@ -1,0 +1,11 @@
+--- libXaw3d-1.6.2/src/Makefile.am.bero	2012-12-26 17:54:12.590732167 +0100
++++ libXaw3d-1.6.2/src/Makefile.am	2012-12-26 17:54:17.365674150 +0100
+@@ -71,7 +71,7 @@ libXaw3d_la_SOURCES = \
+ libXaw3d_la_LIBADD = \
+ 	$(X11_LIBS) $(XPM_LIBS)
+ 
+-libXaw3d_la_LDFLAGS = -version-info 8:0:0 -no-undefined
++libXaw3d_la_LDFLAGS = -version-info 7:0:0 -no-undefined
+ 
+ BUILT_SOURCES = laygram.h
+ 
