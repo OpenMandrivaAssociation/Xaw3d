@@ -86,7 +86,7 @@ aclocal
 automake -a
 autoconf
 
-%configure2_5x
+%configure2_5x \
 		--enable-arrow-scrollbars \
 		--enable-gray-stipples \
         --enable-static
