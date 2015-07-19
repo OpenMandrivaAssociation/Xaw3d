@@ -1,7 +1,7 @@
 Summary:	A version of the MIT Athena widget set for X
 Name:		Xaw3d
 Version:	1.6.2
-Release:	9
+Release:	10
 Group:		System/Libraries
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xext)
