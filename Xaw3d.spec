@@ -1,7 +1,7 @@
 Summary:	A version of the MIT Athena widget set for X
 Name:		Xaw3d
-Version:	1.6.2
-Release:	10
+Version:	1.6.3
+Release:	1
 Group:		System/Libraries
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xext)
@@ -72,13 +72,13 @@ package.
 %package -n %{staticname}
 Summary:	Library files needed for linking statically to %name
 Group:		Development/C
-Requires:	%develname = %EVRD
+Requires:	%{develname} = %EVRD
 
 %description -n %{staticname}
 Library files needed for linking statically to %name
 
 %prep
-%setup -q -n lib%name-%version
+%setup -q -n lib%{name}-%{version}
 %apply_patches
 
 libtoolize --force
@@ -86,10 +86,10 @@ aclocal
 automake -a
 autoconf
 
-%configure2_5x \
+%configure \
 		--enable-arrow-scrollbars \
 		--enable-gray-stipples \
-        --enable-static
+		--enable-static
  
 %build
 %make
@@ -98,15 +98,15 @@ autoconf
 %makeinstall_std
 
 # Useless as it contains mostly build instructions
-rm -rf %buildroot%_docdir/lib%name
+rm -rf %{buildroot}%{_docdir}/lib%{name}
 
 %files -n %{libname}
-%_libdir/*.so.%{major}*
+%{_libdir}/*.so.%{major}*
 
 %files -n %{develname}
-%_libdir/*.so
-%_includedir/X11/Xaw3d
-%_libdir/pkgconfig/*.pc
+%{_libdir}/*.so
+%{_includedir}/X11/Xaw3d
+%{_libdir}/pkgconfig/*.pc
 
 %files -n %staticname
-%_libdir/*.a
+%{_libdir}/*.a
