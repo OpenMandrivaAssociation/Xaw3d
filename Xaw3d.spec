@@ -79,7 +79,7 @@ Library files needed for linking statically to %name
 
 %prep
 %setup -q -n lib%{name}-%{version}
-%apply_patches
+%autopatch -p1
 
 libtoolize --force
 aclocal
