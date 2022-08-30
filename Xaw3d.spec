@@ -1,7 +1,7 @@
 Summary:	A version of the MIT Athena widget set for X
 Name:		Xaw3d
-Version:	1.6.3
-Release:	3
+Version:	1.6.4
+Release:	1
 Group:		System/Libraries
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xext)
@@ -11,7 +11,7 @@ BuildRequires:	pkgconfig(xpm)
 BuildRequires:	bison flex
 BuildRequires:	libtool-base
 BuildRequires:	x11-util-macros
-Source0:	http://xorg.freedesktop.org/individual/lib/lib%name-%version.tar.bz2
+Source0:	http://xorg.freedesktop.org/individual/lib/lib%{name}-%{version}.tar.xz
 Patch0:		libXaw3d-soname-7.patch
 Url:            http://xorg.freedesktop.org/individual/lib/
 License:	MIT
@@ -34,13 +34,13 @@ those applications.
 %define develname %mklibname %{name} -d
 %define staticname %mklibname %name -d -s
 
-%package -n	%{libname}
+%package -n %{libname}
 Summary:	A version of the MIT Athena widget set for X
 Group:		System/Libraries
-Obsoletes:	%{name} < %EVRD
-Provides:	%{name} = %EVRD
+Obsoletes:	%{name} < %{EVRD}
+Provides:	%{name} = %{EVRD}
 
-%description -n	%{libname}
+%description -n %{libname}
 Xaw3d is an enhanced version of the MIT Athena Widget set for
 the X Window System.  Xaw3d adds a three-dimensional look to applications
 with minimal or no source code changes.
@@ -49,11 +49,11 @@ You should install Xaw3d if you are using applications which incorporate
 the MIT Athena widget set and you'd like to incorporate a 3D look into
 those applications.
 
-%package -n	%{develname}
+%package -n %{develname}
 Summary:	Header files for development using Xaw3d
 Group:		Development/C
 Requires:	%{libname} = %{version}-%{release}
-Provides:	%{name}-devel = %version-%release
+Provides:	%{name}-devel = %{version}-%{release}
 %if "%{develname}" != "%{libname}-devel"
 Obsoletes:	%{libname}-devel 
 %endif
@@ -70,16 +70,15 @@ using the Xaw3d widget set.  You'll also need to install the Xaw3d
 package.
 
 %package -n %{staticname}
-Summary:	Library files needed for linking statically to %name
+Summary:	Library files needed for linking statically to %{name}
 Group:		Development/C
-Requires:	%{develname} = %EVRD
+Requires:	%{develname} = %{EVRD}
 
 %description -n %{staticname}
-Library files needed for linking statically to %name
+Library files needed for linking statically to %{name}
 
 %prep
-%setup -q -n lib%{name}-%{version}
-%autopatch -p1
+%autosetup -n lib%{name}-%{version} -p1
 
 libtoolize --force
 aclocal
@@ -87,15 +86,15 @@ automake -a
 autoconf
 
 %configure \
-		--enable-arrow-scrollbars \
-		--enable-gray-stipples \
-		--enable-static
- 
+	--enable-arrow-scrollbars \
+	--enable-gray-stipples \
+	--enable-static
+
 %build
-%make
+%make_build
 
 %install
-%makeinstall_std
+%make_install
 
 # Useless as it contains mostly build instructions
 rm -rf %{buildroot}%{_docdir}/lib%{name}
