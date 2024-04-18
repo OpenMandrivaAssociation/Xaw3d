@@ -1,7 +1,7 @@
 Summary:	A version of the MIT Athena widget set for X
 Name:		Xaw3d
-Version:	1.6.4
-Release:	2
+Version:	1.6.6
+Release:	1
 Group:		System/Libraries
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xext)
@@ -11,9 +11,9 @@ BuildRequires:	pkgconfig(xpm)
 BuildRequires:	bison flex
 BuildRequires:	libtool-base
 BuildRequires:	x11-util-macros
-Source0:	http://xorg.freedesktop.org/individual/lib/lib%{name}-%{version}.tar.xz
+Source0:	https://xorg.freedesktop.org/individual/lib/lib%{name}-%{version}.tar.xz
 Patch0:		libXaw3d-soname-7.patch
-Url:            http://xorg.freedesktop.org/individual/lib/
+Url:            https://xorg.freedesktop.org/individual/lib/
 License:	MIT
 
 %description
